@@ -69,17 +69,12 @@
                     background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);">
                       <div class="container">
                       <div class="row" >
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <h1 class="display-3 col-xs-3" id="welcome">Welcome!</h1>
                             <h3>Choose a category of news you like, and enjoy the time spent on our website.</h3>
                         </div>
-                        <div class="col-md-6" >
-                            <h1><span><img src="contrast.png" width="100px" height="100px"></span>Weather</h1>
-                            <br>
-                            <h4 id="weatherDay"></h4>
-                            <h4 id="weatherNight"></h4>
-                            <br>
-                            <h5 id="nextDays"></h5>
+                        <div class="col-md-4" >
+                           
                         </div>
                       </div>
                       
@@ -110,18 +105,7 @@
         <script>
         
         // A LOT OF AJAX CODE NOW......
-        // WEATHER
-            $.ajax({
-            url:"http://dataservice.accuweather.com/forecasts/v1/daily/1day/298198?apikey=UYTSWpmvt7DTCE6JoCA2ezbBZ7bWo23J",
-            
-            
-            }).done((weather) => {
-            $('#weatherDay').html(`During the day it will be <b>${weather.DailyForecasts[0].Day.IconPhrase}</b>`);
-            $('#weatherNight').html(`During the night it will be <b>${weather.DailyForecasts[0].Night.IconPhrase}</b>`);
-            $('#nextDays').html(` On the following days: <b>${weather.Headline.Text}</b>`);
-            console.log(weather)
-            })
-
+      
            
             $.ajax({
               url:"https://api.nytimes.com/svc/topstories/v2/arts.json?",
