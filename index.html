@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daily News</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Prata&display=swap" rel="stylesheet">
+    
+</head>
+<style>
+  body {
+    font-family: 'Prata', serif;
+    color:#333333;
+    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(215,223,252,1) 0%, rgba(255,255,255,1) 0%, rgba(215,223,252,1) 84% );
+  }
+  @media (max-width:1000px){
+    #list, li {
+      display:inline-block;
+      padding-left:8px;
+    }
+    #main-content{
+      margin:0px;
+    }
+  }
+  @media (max-width:500px){
+   #welcome {
+     font-size:60px;
+   }
+  }
+</style>
+<body>
+    <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-none mb-5">
+                    <a class="navbar-brand" href="#"><h3>Daily News</h3></a>
+                    <div class="navbar navbar-collapse" >
+                      <ul class="navbar-nav mr-auto " id="list">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link " href="#" id="world">World</a>
+                        </li>
+                         <li class="nav-item"><a class="nav-link" href="#" id="science">Science</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="politics">Politics</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="business">Business</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="tech">Tech</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="health">Health</a></li> 
+
+                         <li class="nav-item"><a class="nav-link" href="#" id="opinion">Opinion</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="sports">Sports</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="food">Food</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="travel">Travel</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="magazine">Magazine</a></li> 
+                         <li class="nav-item"><a class="nav-link" href="#" id="arts">Arts</a></li> 
+                      </ul>
+                    </div>
+              </nav>
+    </div>
+
+         <div class="container">
+           <h1 class="ml-4" id="section-text" style="font-weight: bold"></h1>
+             <div id="header-content" >
+                <main role="main">
+
+                    <!-- Main jumbotron -->
+                    <div class="jumbotron" style="background-color: #fbb034;
+                    background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);">
+                      <div class="container">
+                      <div class="row" >
+                        <div class="col-md-6">
+                            <h1 class="display-3 col-xs-3" id="welcome">Welcome!</h1>
+                            <h3>Choose a category of news you like, and enjoy the time spent on our website.</h3>
+                        </div>
+                        <div class="col-md-6" >
+                            <h1><span><img src="contrast.png" width="100px" height="100px"></span>Weather</h1>
+                            <br>
+                            <h4 id="weatherDay"></h4>
+                            <h4 id="weatherNight"></h4>
+                            <br>
+                            <h5 id="nextDays"></h5>
+                        </div>
+                      </div>
+                      
+                        
+                        
+                      </div>
+                    </div>
+                  
+                    
+                           
+                          
+                            
+                        
+                  
+               </div> <!-- /container -->
+                  
+                  </main>
+             </div>
+               <div class="container " id="main-content">
+               </div>
+          </div>
+         <!--SCRIPTS-->
+         <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous">
+        </script>
+        <script>
+        
+        // A LOT OF AJAX CODE NOW......
+        // WEATHER
+            $.ajax({
+            url:"http://dataservice.accuweather.com/forecasts/v1/daily/1day/298198?apikey=UYTSWpmvt7DTCE6JoCA2ezbBZ7bWo23J",
+            
+            
+            }).done((weather) => {
+            $('#weatherDay').html(`During the day it will be <b>${weather.DailyForecasts[0].Day.IconPhrase}</b>`);
+            $('#weatherNight').html(`During the night it will be <b>${weather.DailyForecasts[0].Night.IconPhrase}</b>`);
+            $('#nextDays').html(` On the following days: <b>${weather.Headline.Text}</b>`);
+            console.log(weather)
+            })
+
+           
+            $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/arts.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/world.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/science.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/politics.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/business.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/technology.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/health.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/opinion.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/sports.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/food.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              $.ajax({
+              url:"https://api.nytimes.com/svc/topstories/v2/travel.json?",
+              data: {
+                  "api-key":"M8A4xH77bXmp8Nlsg6KnX2FrReXGL4gA"
+             }
+              }).done((news) => {
+              
+                for(var i = 1;i< news.results.length;i+=8){
+        if(news.results[i].multimedia[0] == null){
+          $('#thumbnail').append(`Placeholder`)
+          $('#content').append(`<h4>${news.results[i].abstract}</h4>`)
+        }else{
+          $('#main-content').append(`
+          <div class="row mb-2">
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">${news.results[i].section}</strong>
+                <h3 class="mb-0">${news.results[i].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i].created_date}</div>
+                <p class="card-text mb-auto">${news.results[i].abstract}</p>
+                <a href="${news.results[i].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-info">${news.results[i-1].section}</strong>
+                <h3 class="mb-0">${news.results[i-1].title}</h3>
+                <div class="mb-1 text-muted">${news.results[i-1].created_date}</div>
+                <p class="mb-auto">${news.results[i-1].abstract}</p>
+                <a href="${news.results[i-1].url}" class="stretched-link">Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                      <img class="card-img-right flex-auto d-none d-md-block m-5" src="${news.results[i-1].multimedia[1].url}" width="100%" style="box-shadow:10px 10px 5px #aaaaaa">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `)
+          }
+          }
+              })
+              
+        </script>
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+    <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    
+</body>
+</html>
